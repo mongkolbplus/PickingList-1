@@ -11,6 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { AppButton } from './AppButton';
+import { BARCODE_SCAN_TYPES } from '../constants/barcodeScan';
 import { colors, minTouch, radius } from '../theme/colors';
 
 interface DocumentRefInputProps {
@@ -72,7 +73,7 @@ export function DocumentRefInput({
           <CameraView
             style={styles.camera}
             barcodeScannerSettings={{
-              barcodeTypes: ['ean13', 'ean8', 'code128', 'qr'],
+              barcodeTypes: BARCODE_SCAN_TYPES,
             }}
             onBarcodeScanned={({ data }) => {
               onChangeText(data);

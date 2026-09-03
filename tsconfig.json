@@ -4,8 +4,8 @@
     "strict": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@scan-goods/shared": ["../../packages/shared/src/index.ts"],
-      "@scan-goods/shared/*": ["../../packages/shared/src/*"]
+      "@scan-goods/shared": ["./packages/shared/src/index.ts"],
+      "@scan-goods/shared/*": ["./packages/shared/src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

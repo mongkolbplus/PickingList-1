@@ -4,7 +4,6 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import { router } from 'expo-router';
@@ -13,7 +12,6 @@ import {
   ErpError,
   formatDisplayDate,
   loadSessionFromDiKeys,
-  parseDisplayDate,
   searchDocumentsFromErp,
   th,
   validateDocumentFilters,
@@ -21,6 +19,7 @@ import {
 } from '@scan-goods/shared';
 import { Screen } from '../../src/components/Screen';
 import { AppButton } from '../../src/components/AppButton';
+import { AppDatePicker, isoToDate } from '../../src/components/AppDatePicker';
 import { Card } from '../../src/components/Card';
 import { DocumentRefInput } from '../../src/components/DocumentRefInput';
 import { StatusBadge } from '../../src/components/StatusBadge';
@@ -53,8 +52,6 @@ export default function DocumentsScreen() {
   const [toRef, setToRef] = useState('');
   const [fromDate, setFromDate] = useState(todayIso);
   const [toDate, setToDate] = useState(todayIso);
-  const [fromDateText, setFromDateText] = useState(() => formatDisplayDate(todayIso()));
-  const [toDateText, setToDateText] = useState(() => formatDisplayDate(todayIso()));
 
   const selectedKeys = useMemo(
     () => new Set(selectedDocs.map((d) => d.diKey)),
@@ -63,58 +60,21 @@ export default function DocumentsScreen() {
   const allSelected =
     docs.length > 0 && docs.every((doc) => selectedKeys.has(doc.diKey));
 
-  const handleFromDateBlur = () => {
-    const parsed = parseDisplayDate(fromDateText);
-    if (parsed) {
-      setFromDate(parsed);
-      setFromDateText(formatDisplayDate(parsed));
-      return;
-    }
-    setFromDateText(formatDisplayDate(fromDate));
-  };
-
-  const handleToDateBlur = () => {
-    const parsed = parseDisplayDate(toDateText);
-    if (parsed) {
-      setToDate(parsed);
-      setToDateText(formatDisplayDate(parsed));
-      return;
-    }
-    setToDateText(formatDisplayDate(toDate));
-  };
-
   const resetFilters = () => {
     const today = todayIso();
-    const todayDisplay = formatDisplayDate(today);
     setFromRef('');
     setToRef('');
     setFromDate(today);
     setToDate(today);
-    setFromDateText(todayDisplay);
-    setToDateText(todayDisplay);
     setDocs([]);
     setSelectedDocs([]);
     setNotice(null);
   };
 
   const search = async () => {
-    if (!loginGuid) return;
-
-    const parsedFromDate = parseDisplayDate(fromDateText);
-    const parsedToDate = parseDisplayDate(toDateText);
-    if (!parsedFromDate || !parsedToDate) {
-      setNotice(th.documents.dateInvalid);
-      return;
-    }
-
-    setFromDate(parsedFromDate);
-    setToDate(parsedToDate);
-    setFromDateText(formatDisplayDate(parsedFromDate));
-    setToDateText(formatDisplayDate(parsedToDate));
-
     const validation = validateDocumentFilters({
-      fromDate: parsedFromDate,
-      toDate: parsedToDate,
+      fromDate,
+      toDate,
       fromRef,
       toRef,
     });
@@ -122,15 +82,19 @@ export default function DocumentsScreen() {
       setNotice(validation);
       return;
     }
+    if (!loginGuid) {
+      setNotice(th.auth.relogin);
+      return;
+    }
 
     setLoading(true);
     setNotice(null);
     try {
       const result = await searchDocumentsFromErp(loginGuid, {
-        fromDate: parsedFromDate,
-        toDate: parsedToDate,
-        fromRef: fromRef.trim() || undefined,
-        toRef: toRef.trim() || undefined,
+        fromDate,
+        toDate,
+        fromRef: fromRef || undefined,
+        toRef: toRef || undefined,
       });
       setDocs(result);
       setSelectedDocs(result);
@@ -193,30 +157,20 @@ export default function DocumentsScreen() {
     <Screen title={th.documents.title} subtitle={th.documents.eyebrow}>
       <Card>
         <View style={styles.dateRow}>
-          <View style={styles.dateField}>
-            <Text style={styles.label}>{th.documents.fromDate}</Text>
-            <TextInput
-              style={styles.input}
-              value={fromDateText}
-              onChangeText={setFromDateText}
-              onBlur={handleFromDateBlur}
-              placeholder={th.documents.datePlaceholder}
-              inputMode="numeric"
-              editable={!loading}
-            />
-          </View>
-          <View style={styles.dateField}>
-            <Text style={styles.label}>{th.documents.toDate}</Text>
-            <TextInput
-              style={styles.input}
-              value={toDateText}
-              onChangeText={setToDateText}
-              onBlur={handleToDateBlur}
-              placeholder={th.documents.datePlaceholder}
-              inputMode="numeric"
-              editable={!loading}
-            />
-          </View>
+          <AppDatePicker
+            label={th.documents.fromDate}
+            value={fromDate}
+            onChange={setFromDate}
+            disabled={loading}
+            maximumDate={isoToDate(toDate)}
+          />
+          <AppDatePicker
+            label={th.documents.toDate}
+            value={toDate}
+            onChange={setToDate}
+            disabled={loading}
+            minimumDate={isoToDate(fromDate)}
+          />
         </View>
 
         <DocumentRefInput
@@ -252,23 +206,21 @@ export default function DocumentsScreen() {
       </Card>
 
       <Card>
-        <View style={styles.listHeader}>
-          <Text style={styles.count}>
-            {th.documents.listTitle} ({docs.length}) · เลือก {selectedDocs.length} ฉบับ
-          </Text>
-          {docs.length > 0 ? (
-            <Pressable onPress={toggleAll} style={styles.selectAllBtn}>
-              <Ionicons
-                name={allSelected ? 'checkbox' : 'square-outline'}
-                size={20}
-                color={colors.accent}
-              />
-              <Text style={styles.selectAllText}>
-                {allSelected ? 'ยกเลิกทั้งหมด' : th.documents.selectAllAria}
-              </Text>
-            </Pressable>
-          ) : null}
-        </View>
+        <Text style={styles.count}>
+          {th.documents.listTitle} ({docs.length}) · เลือก {selectedDocs.length} ฉบับ
+        </Text>
+        {docs.length > 0 ? (
+          <Pressable onPress={toggleAll} style={styles.selectAllBtn}>
+            <Ionicons
+              name={allSelected ? 'checkbox' : 'square-outline'}
+              size={20}
+              color={colors.accent}
+            />
+            <Text style={styles.selectAllText}>
+              {allSelected ? 'ยกเลิกทั้งหมด' : th.documents.selectAllAria}
+            </Text>
+          </Pressable>
+        ) : null}
 
         {docs.length === 0 ? (
           <Text style={styles.empty}>{th.documents.emptyTable}</Text>
@@ -310,35 +262,18 @@ export default function DocumentsScreen() {
 }
 
 const styles = StyleSheet.create({
-  label: { fontSize: 13, fontWeight: '600', color: colors.ink, marginBottom: 4 },
-  input: {
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: radius.md,
-    minHeight: minTouch,
-    paddingHorizontal: 12,
-    backgroundColor: '#fff',
-    fontSize: 15,
-    color: colors.ink,
-  },
   dateRow: { flexDirection: 'row', gap: 8, marginBottom: 8 },
-  dateField: { flex: 1 },
   row: { flexDirection: 'row', gap: 8, marginTop: 4 },
   notice: { color: colors.danger, fontSize: 13, marginBottom: 8 },
-  listHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 8,
-    marginBottom: 8,
-  },
-  count: { flex: 1, color: colors.muted, fontSize: 13 },
+  count: { color: colors.muted, fontSize: 13, marginBottom: 4 },
   selectAllBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
     minHeight: minTouch,
     paddingHorizontal: 4,
+    marginBottom: 8,
+    alignSelf: 'flex-start',
   },
   selectAllText: { fontSize: 13, color: colors.accent, fontWeight: '600' },
   empty: { color: colors.muted, fontSize: 14, marginBottom: 8 },

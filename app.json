@@ -35,6 +35,14 @@
     },
     "plugins": [
       "./plugins/withErpSslCompat",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "cmakeVersion": "3.31.6"
+          }
+        }
+      ],
       "expo-router",
       "expo-sqlite",
       "expo-font",
@@ -43,7 +51,8 @@
         {
           "cameraPermission": "ใช้กล้องสำหรับสแกนบาร์โค้ด"
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true
