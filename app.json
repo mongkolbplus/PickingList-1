@@ -1,25 +1,57 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "Packing List",
+    "slug": "packing-list-mobile",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "orientation": "default",
+    "scheme": "packinglist",
     "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bplus.packinglist",
+      "infoPlist": {
+        "NSCameraUsageDescription": "ใช้กล้องสำหรับสแกนบาร์โค้ดสินค้าและเอกสาร",
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSAllowsLocalNetworking": true
+        }
+      }
     },
     "android": {
+      "package": "com.bplus.packinglist",
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0d255c",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_CONNECT"
+      ]
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "plugins": [
+      "./plugins/withErpSslCompat",
+      "expo-router",
+      "expo-sqlite",
+      "expo-font",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "ใช้กล้องสำหรับสแกนบาร์โค้ด"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "packing-list-mobile"
+      }
     }
   }
 }
