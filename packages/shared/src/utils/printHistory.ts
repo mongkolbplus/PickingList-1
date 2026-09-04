@@ -1,3 +1,5 @@
+import { createId } from './createId';
+
 export type PrintDocType = 'label' | 'packing';
 
 export interface PrintHistoryEntry {
@@ -40,7 +42,7 @@ export function addPrintHistory(
   entry: Omit<PrintHistoryEntry, 'id' | 'at'> & { at?: string },
 ): PrintHistoryEntry {
   const record: PrintHistoryEntry = {
-    id: crypto.randomUUID(),
+    id: createId(),
     at: entry.at ?? new Date().toISOString(),
     type: entry.type,
     title: entry.title,

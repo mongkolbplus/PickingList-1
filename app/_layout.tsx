@@ -22,6 +22,7 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)/api-settings" />
         <Stack.Screen name="(auth)/select-org" />
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="packing/scan" />
         <Stack.Screen name="packing/confirm" options={{ presentation: 'modal' }} />
         <Stack.Screen name="packing/print" options={{ presentation: 'modal' }} />
         <Stack.Screen name="history" />

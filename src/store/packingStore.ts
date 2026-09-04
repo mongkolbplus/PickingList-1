@@ -6,10 +6,11 @@ import {
   localScan,
   localUndoLastScan,
   preparePackingSession,
+  th,
 } from '@scan-goods/shared';
 import { parseBarcodeInput } from '@scan-goods/shared';
-import { saveSessionSnapshot, saveJobRecord } from '../services/database';
-import { createId } from '../utils/uuid';
+import { saveSessionSnapshot, loadJobHistory } from '../services/database';
+import { upsertJobFromSession } from '../services/jobStorage';
 
 interface PackingState {
   session: ScanSession | null;
@@ -18,6 +19,8 @@ interface PackingState {
   lastScanMessage: string | null;
   setSelectedDocs: (docs: DocumentListItem[]) => void;
   setSession: (session: ScanSession | null) => Promise<void>;
+  startSession: (session: ScanSession, packerName?: string) => Promise<void>;
+  updateSession: (session: ScanSession) => Promise<void>;
   restoreSession: (session: ScanSession) => Promise<void>;
   scanBarcode: (raw: string) => Promise<string>;
   undoLastScan: () => Promise<void>;
@@ -43,6 +46,48 @@ export const usePackingStore = create<PackingState>((set, get) => ({
     const prepared = session ? preparePackingSession(session) : null;
     set({ session: prepared });
     await persistSession(prepared);
+  },
+
+  startSession: async (raw, packerName) => {
+    const next = preparePackingSession({
+      ...raw,
+      packerName,
+      workflowStatus: th.workflow.packing,
+      status: 'open',
+    });
+    console.log('[StartPacking] startSession:save', {
+      sessionId: next.sessionId,
+      packerName: packerName ?? null,
+      documentCount: next.documents.length,
+      itemCount: next.items.length,
+      activePartyCode: next.activePartyCode ?? null,
+      currentBoxNo: next.currentBoxNo,
+    });
+    set({ session: next });
+    await persistSession(next);
+    const job = await upsertJobFromSession(next, {
+      workflowStatus: th.workflow.packing,
+      packerName,
+      action: th.jobActions.start,
+    });
+    const jobs = await loadJobHistory(200);
+    set({ jobs: jobs.length ? jobs : [job] });
+    console.log('[StartPacking] startSession:complete', {
+      sessionId: next.sessionId,
+      jobId: job.id,
+    });
+  },
+
+  updateSession: async (session) => {
+    set({ session });
+    await persistSession(session);
+    const job = await upsertJobFromSession(session, {
+      workflowStatus: session.workflowStatus ?? th.workflow.packing,
+      packerName: session.packerName,
+      action: th.jobActions.update,
+    });
+    const jobs = await loadJobHistory(200);
+    set({ jobs: jobs.length ? jobs : [job] });
   },
 
   restoreSession: async (session) => {
@@ -99,24 +144,20 @@ export const usePackingStore = create<PackingState>((set, get) => ({
   pauseSession: async () => {
     const { session } = get();
     if (!session) return;
-    const next = { ...session, status: 'paused' as const, workflowStatus: 'พักงาน' as const };
+    const next = {
+      ...session,
+      status: 'paused' as const,
+      workflowStatus: th.workflow.paused,
+    };
     set({ session: next });
     await persistSession(next);
-    const job: JobRecord = {
-      id: createId(),
-      sessionId: next.sessionId,
-      documentRefs: next.documents.map((d) => d.diRef),
-      customerName: next.documents[0]?.partyName,
-      workflowStatus: 'พักงาน',
-      boxCount: next.boxes.length,
-      scannedQty: next.items.reduce((s, i) => s + i.scanQty, 0),
-      startedAt: next.startedAt ?? new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      auditLog: [],
-    };
-    await saveJobRecord(job);
-    const jobs = [job, ...get().jobs].slice(0, 100);
-    set({ jobs });
+    const job = await upsertJobFromSession(next, {
+      workflowStatus: th.workflow.paused,
+      packerName: next.packerName,
+      action: th.jobActions.pause,
+    });
+    const jobs = await loadJobHistory(200);
+    set({ jobs: jobs.length ? jobs : [job] });
   },
 }));
 

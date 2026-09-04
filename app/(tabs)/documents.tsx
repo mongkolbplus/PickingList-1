@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import {
-  Alert,
   Pressable,
   StyleSheet,
   Text,
@@ -25,6 +24,7 @@ import { DocumentRefInput } from '../../src/components/DocumentRefInput';
 import { StatusBadge } from '../../src/components/StatusBadge';
 import { useAuthStore } from '../../src/store/authStore';
 import { usePackingStore } from '../../src/store/packingStore';
+import { acquireDocumentLocks } from '../../src/services/documentLock';
 import { colors, minTouch, radius } from '../../src/theme/colors';
 
 function todayIso() {
@@ -38,9 +38,15 @@ function formatParty(doc: DocumentListItem) {
   return doc.partyName || '-';
 }
 
+function logStartPacking(step: string, detail?: Record<string, unknown>) {
+  const payload = detail ? ` ${JSON.stringify(detail)}` : '';
+  console.log(`[StartPacking] ${step}${payload}`);
+}
+
 export default function DocumentsScreen() {
   const loginGuid = useAuthStore((s) => s.loginGuid);
-  const setSession = usePackingStore((s) => s.setSession);
+  const username = useAuthStore((s) => s.username);
+  const startSession = usePackingStore((s) => s.startSession);
   const setSelectedDocs = usePackingStore((s) => s.setSelectedDocs);
   const selectedDocs = usePackingStore((s) => s.selectedDocs);
 
@@ -127,24 +133,88 @@ export default function DocumentsScreen() {
   };
 
   const startPacking = async () => {
-    if (!loginGuid || selectedDocs.length === 0) {
-      Alert.alert('แจ้งเตือน', th.documents.selectAtLeastOne);
+    if (!loginGuid) {
+      logStartPacking('aborted', { reason: 'no-login-guid' });
       return;
     }
+
+    const keys = selectedDocs.map((doc) => doc.diKey);
+    const docRefs = selectedDocs.map((doc) => doc.diRef);
+    logStartPacking('pressed', {
+      username: username ?? 'user',
+      selectedCount: keys.length,
+      diKeys: keys,
+      docRefs,
+    });
+
+    if (!keys.length) {
+      logStartPacking('aborted', { reason: 'no-documents-selected' });
+      setNotice(th.documents.selectAtLeastOne);
+      return;
+    }
+
     setLoading(true);
     setNotice(null);
     try {
-      const session = await loadSessionFromDiKeys(
-        loginGuid,
-        selectedDocs.map((d) => d.diKey),
-      );
+      logStartPacking('loadSessionFromDiKeys', { diKeys: keys });
+      const session = await loadSessionFromDiKeys(loginGuid, keys);
+      logStartPacking('loadSessionFromDiKeys:done', {
+        sessionId: session.sessionId,
+        documentCount: session.documents.length,
+        itemCount: session.items.length,
+        documentRefs: session.documents.map((doc) => doc.diRef),
+      });
+
       if (!session.documents.length || !session.items.length) {
+        logStartPacking('aborted', {
+          reason: 'no-line-items',
+          sessionId: session.sessionId,
+        });
         setNotice(th.documents.noLineItems);
         return;
       }
-      await setSession(session);
-      router.push('/(tabs)/scan');
+
+      const lockResult = await acquireDocumentLocks(
+        keys,
+        session.sessionId,
+        username ?? 'user',
+      );
+      if (!lockResult.ok) {
+        const refs = lockResult.conflicts
+          .map((lock) => {
+            const doc = session.documents.find((d) => d.diKey === lock.diKey);
+            return doc?.diRef ?? String(lock.diKey);
+          })
+          .join(', ');
+        logStartPacking('aborted', {
+          reason: 'document-locked',
+          sessionId: session.sessionId,
+          conflicts: lockResult.conflicts.map((lock) => ({
+            diKey: lock.diKey,
+            username: lock.username,
+            sessionId: lock.sessionId,
+          })),
+        });
+        setNotice(
+          `เอกสารถูกล็อกอยู่: ${refs} (${lockResult.conflicts[0]?.username})`,
+        );
+        return;
+      }
+
+      logStartPacking('acquireDocumentLocks:ok', { sessionId: session.sessionId });
+      await startSession(session, username ?? undefined);
+      logStartPacking('startSession:done', {
+        sessionId: session.sessionId,
+        activePartyCode: session.activePartyCode ?? null,
+        currentBoxNo: session.currentBoxNo,
+        navigateTo: '/packing/scan',
+      });
+      router.push('/packing/scan');
     } catch (error) {
+      logStartPacking('error', {
+        message: error instanceof Error ? error.message : String(error),
+        name: error instanceof ErpError ? 'ErpError' : error instanceof Error ? error.name : 'unknown',
+      });
       setNotice(
         error instanceof ErpError ? error.message : th.documents.loadFailed,
       );

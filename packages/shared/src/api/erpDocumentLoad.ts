@@ -3,6 +3,7 @@ import type { DocumentListItem, DocumentLookupFunction } from '../types/packing'
 import { packingListDtPropertiesSqlList } from '../config/erpConfig';
 import { erpBaseBody, erpRequest, ErpError } from './erpClient';
 import { mapRequiresFlags } from '../utils/serialLotUtils';
+import { createId } from '../utils/createId';
 import { th } from '../text/th';
 
 export interface DocumentFilters {
@@ -10,13 +11,13 @@ export interface DocumentFilters {
   toDate: string;
   fromRef?: string;
   toRef?: string;
-  /** AR_KEY â€” filter Oe000304 / Oe000404 / Oe001304: and ARD_AR=... */
+  /** AR_KEY  filter Oe000304 / Oe000404 / Oe001304: and ARD_AR=... */
   arKey?: string;
-  /** DT_KEY â€” filter Oe000304 / Oe000404 / Oe001304: and DI_DT=... */
+  /** DT_KEY  filter Oe000304 / Oe000404 / Oe001304: and DI_DT=... */
   dtKey?: string;
-  /** WL_KEY â€” filter Oe000304 / Oe000404 / Oe001304: and trh_key in (select trd_trh from transtkd where trd_wl=...) */
+  /** WL_KEY  filter Oe000304 / Oe000404 / Oe001304: and trh_key in (select trd_trh from transtkd where trd_wl=...) */
   warehouseKey?: string;
-  /** @deprecated à¹ÿà¸ÿà¹ÿ arKey à¹ÿà¸—à¸ÿ */
+  /** @deprecated  arKey ? */
   partyCode?: string;
   docRef?: string;
   projectKey?: string;
@@ -37,7 +38,7 @@ export const DOCUMENT_LOOKUP_FUNCTIONS: readonly DocumentLookupFunction[] = [
   'Oe001304',
 ] as const;
 
-/** à¸¥à¸³à¸”à¸±à¸ÿà¸ÿà¸²à¸£à¹ÿà¸«à¸¥à¸”à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”à¹€à¸­à¸ÿà¸ªà¸²à¸£à¸•à¸­à¸ÿà¹€à¸£à¸´à¹ÿà¸¡à¸ÿà¸±à¸”à¸ªà¸´à¸ÿà¸ÿà¹ÿà¸² (/documents) */
+/** ??????????????????????????????????? (/documents) */
 export const DOCUMENT_DETAIL_FUNCTIONS = [
   'GetSellOrderDocinfo',
   'GetCashSalesDocinfo',
@@ -177,7 +178,7 @@ function mapLineItem(
   const flags = mapRequiresFlags(row);
 
   return {
-    itemId: crypto.randomUUID(),
+    itemId: createId(),
     sourceDiKey: diKey,
     sourceTrdKey: parseNumber(row.TRD_SEQ),
     goodsCode: row.GOODS_CODE ?? row.TRD_KEYIN ?? '',
@@ -227,7 +228,7 @@ async function lookupDocuments(loginGuid: string, filters: DocumentFilters) {
         merged.push(row);
       }
     } catch {
-      // à¸ÿà¹ÿà¸²à¸¡ function à¸—à¸µà¹ÿà¸¥à¹ÿà¸¡à¹€à¸«à¸¥à¸§ à¹ÿà¸¥à¹ÿà¸§à¸£à¸§à¸¡à¸ÿà¸¥à¸ÿà¸²à¸ÿ function à¸­à¸·à¹ÿà¸ÿà¸•à¹ÿà¸­
+      // ?? function ???????? ??????? function ????
     }
   }
 
@@ -249,7 +250,7 @@ function isDocInfoFound(response: ErpDocInfoResponse, diKey: string) {
   return loadedKey !== '' && loadedKey === String(diKey).trim();
 }
 
-/** à¸¥à¸­à¸ÿà¹ÿà¸«à¸¥à¸”à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”à¹€à¸­à¸ÿà¸ªà¸²à¸£à¸—à¸µà¸¥à¸° function à¸ÿà¸ÿà¸ÿà¸ÿà¸ÿà¹ÿà¸­à¸¡à¸¹à¸¥ */
+/** ???????????????????????? function ???? */
 async function resolveDocumentDetail(loginGuid: string, diKey: string) {
   for (const erpFunction of DOCUMENT_DETAIL_FUNCTIONS) {
     try {
@@ -258,7 +259,7 @@ async function resolveDocumentDetail(loginGuid: string, diKey: string) {
         return response;
       }
     } catch {
-      // à¹ÿà¸¡à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿ function à¸ÿà¸µà¹ÿ â€” à¸¥à¸­à¸ÿ function à¸–à¸±à¸”à¹ÿà¸ÿ
+      // ? function ?  ?? function ???
     }
   }
 
@@ -297,7 +298,7 @@ function buildSessionFromDocInfo(
   }
 
   return {
-    sessionId: globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`,
+    sessionId: createId(),
     module: 'PackingList',
     status: 'open',
     workflowStatus: th.workflow.packing,
@@ -331,7 +332,7 @@ function mapRowToListItem(row: PackingDocumentRow): DocumentListItem {
   };
 }
 
-/** Â§3.2 â€” à¸ÿà¹ÿà¸ÿà¸«à¸²à¸£à¸²à¸¢à¸ÿà¸²à¸£à¹€à¸­à¸ÿà¸ªà¸²à¸£à¸£à¸§à¸¡à¸ÿà¸²à¸ÿà¸—à¸¸à¸ÿ ERP function (à¸¢à¸±à¸ÿà¹ÿà¸¡à¹ÿà¹ÿà¸«à¸¥à¸”à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”) */
+/** 3.2  ?????????????????? ERP function (????????????????) */
 export async function searchDocumentsFromErp(
   loginGuid: string,
   filters: DocumentFilters,
@@ -340,7 +341,7 @@ export async function searchDocumentsFromErp(
   return rows.map(mapRowToListItem).sort(compareDocumentListItems);
 }
 
-/** à¹ÿà¸«à¸¥à¸” session à¸ÿà¸²à¸ÿ DI_KEY à¸—à¸µà¹ÿà¹€à¸¥à¸·à¸­à¸ÿ */
+/** ??? session ? DI_KEY ?????? */
 export async function loadSessionFromDiKeys(
   loginGuid: string,
   diKeys: number[],
@@ -357,7 +358,7 @@ export async function loadSessionFromDiKeys(
   return buildSessionFromDocInfo(responses);
 }
 
-/** à¹ÿà¸«à¸¥à¸”à¸—à¸¸à¸ÿà¹€à¸­à¸ÿà¸ªà¸²à¸£à¸•à¸²à¸¡ filter (legacy) */
+/** ????????????? filter (legacy) */
 export async function loadSessionFromErp(
   loginGuid: string,
   filters: DocumentFilters,

@@ -1,6 +1,7 @@
 import type { ScanSession } from '../api/client';
 import type { JobRecord, WorkflowStatus } from '../types/packing';
 import { th } from '../text/th';
+import { createId } from './createId';
 
 const ACTIVE_SESSION_KEY = 'packing-list-active-session';
 const JOBS_KEY = 'packing-list-jobs';
@@ -55,7 +56,7 @@ export function upsertJobFromSession(
   const existing = jobs.find((j) => j.sessionId === session.sessionId);
 
   const record: JobRecord = {
-    id: existing?.id ?? crypto.randomUUID(),
+    id: existing?.id ?? createId(),
     sessionId: session.sessionId,
     documentRefs: session.documents.map((d) => d.diRef),
     customerName: session.documents[0]?.partyName,
@@ -108,7 +109,7 @@ export function dashboardStats(jobs: JobRecord[]) {
     waiting: jobs.filter((j) => j.workflowStatus === th.workflow.waiting).length,
     inProgress: jobs.filter((j) => j.workflowStatus === th.workflow.packing).length,
     done: jobs.filter((j) => doneStatuses.includes(j.workflowStatus)).length,
-    problem: jobs.filter((j) => String(j.workflowStatus).includes('»Ñ­Ë')).length,
+    problem: jobs.filter((j) => String(j.workflowStatus).includes('?')).length,
     boxesToday: todayJobs.reduce((sum, j) => sum + j.boxCount, 0),
     scannedToday: todayJobs.reduce((sum, j) => sum + j.scannedQty, 0),
   };
