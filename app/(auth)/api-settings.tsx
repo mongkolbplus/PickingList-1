@@ -103,7 +103,7 @@ export default function ApiSettingsScreen() {
           style={styles.input}
           value={baseUrl}
           onChangeText={setBaseUrl}
-          placeholder="http://192.168.0.110:8422/ws1/BplusErpDvSvrIIS31.dll"
+          placeholder="http://192.168.0.110:8422/ws1/BplusErpDvSvrIIS31_2025-05-09.dll"
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType="url"

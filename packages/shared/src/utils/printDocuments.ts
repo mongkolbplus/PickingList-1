@@ -21,34 +21,34 @@ export interface PrintDocumentInfo {
 
 export interface BoxLabelPrintData {
   boxNo: number;
-  /** à¹€à¸ÿâÿ¬à¹€à¸ÿà¸…à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸…à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸’à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ session */
+  /** ?ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ session */
   sourceBoxNo: number;
   totalBoxes: number;
   document: PrintDocumentInfo;
-  /** à¹€à¸ÿâÿ¬à¹€à¸ÿà¸…à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿâ€”à¹€à¸ÿà¸•à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿâÿ¬à¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸’à¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸…à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ (1 à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ à¹€à¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸—à¹€à¸ÿà¸ÿ à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿâ€ÿ-à¹€à¸ÿà¸ÿà¹€à¸ÿà¸’à¹€à¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿâ€ÿ) */
+  /** ?ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½-?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½) */
   documentRefLabel: string;
   documentRefs: string[];
-  /** à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸—à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸…à¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸’ */
+  /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½? */
   customerName: string;
   address: ShippingAddress;
   totalWeight: number;
-  /** à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸“à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸”à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸…à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ */
+  /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
   totalQty: number;
-  /** à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸’ barcode = à¹€à¸ÿâÿ¬à¹€à¸ÿà¸…à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿâ€”à¹€à¸ÿà¸•à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿâÿ¬à¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸’à¹€à¸ÿà¸ÿ (à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿâ€ÿ-à¹€à¸ÿà¸ÿà¹€à¸ÿà¸’à¹€à¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿâ€ÿ) */
+  /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½? barcode = ?ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½-?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½) */
   barcodeValue: string;
-  /** à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸—à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸”à¹€à¸ÿà¸ÿà¹€à¸ÿà¸‘à¹€à¸ÿâ€”à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ (à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸’à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ ShippingAddress company/branch) */
+  /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ShippingAddress company/branch) */
   senderCompanyName: string;
-  /** à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸‘à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸‘à¹€à¸ÿâ€ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸…à¹€à¸ÿà¸’à¹€à¸ÿà¸ÿà¹€à¸ÿâ€”à¹€à¸ÿà¸’à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ */
+  /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
   province: string;
-  /** à¹€à¸ÿà¸ÿà¹€à¸ÿà¸’à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸’à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸…à¹€à¸ÿà¸’à¹€à¸ÿà¸ÿà¹€à¸ÿâ€”à¹€à¸ÿà¸’à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ */
+  /** ?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
   destinationBranch: string;
-  /** à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿâ€¢à¹€à¸ÿà¸”à¹€à¸ÿâ€ÿà¹€à¸ÿâ€¢à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿ */
+  /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ */
   contactName: string;
   phone: string;
   shipMethod: string;
-  /** barcode à¹€à¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸‘à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸…à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ */
+  /** barcode ?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
   boxBarcodeValue: string;
-  /** à¹€à¸ÿâ€”à¹€à¸ÿà¸•à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸‘à¹€à¸ÿâ€ÿà¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿâ€¢à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸‘à¹€à¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿà¸ÿà¹€à¸ÿâÿ¬à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ (à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿà¹€à¸ÿà¸’à¹ÿà¸ÿà¸ÿà¹ÿà¸ÿà¸ÿ ShippingAddress) */
+  /** ?ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ShippingAddress) */
   headerAddressLines: string[];
 }
 
@@ -645,6 +645,27 @@ function printStyles(profile: PrintPaperProfile = 'a4') {
         margin: 0 auto 12px;
         background: #fff;
       }
+      ${
+        profile === 'label'
+          ? `
+      .a4-label-page--default {
+        width: min(210mm, 100%);
+        height: auto;
+        min-height: 0;
+        grid-template-rows: auto auto auto;
+      }
+      .a4-label-page--default .a4-label-slot {
+        height: auto;
+        min-height: calc((297mm - 12mm - 5mm) / 2);
+      }
+      .formal-label {
+        overflow: visible;
+        height: auto;
+        min-height: 100%;
+      }
+      `
+          : ''
+      }
     }
     @media print {
       .printer-hint {
@@ -667,6 +688,13 @@ function printStyles(profile: PrintPaperProfile = 'a4') {
 }
 
 export const LABELS_PER_A4_PAGE = 2;
+
+const LABEL_BARCODE_OPTIONS = {
+  targetWidthMm: 38,
+  barHeightMm: 8,
+  quietZoneModules: 8,
+  minNarrowModuleMm: 0.25,
+} as const;
 
 function labelHintText(printerHint: string) {
   const base =
@@ -733,6 +761,7 @@ export function renderBoxLabelsHtml(
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3" />
   <title>\u0e43\u0e1a\u0e1b\u0e30\u0e01\u0e25\u0e48\u0e2d\u0e07 ${diRef}</title>
   <style>
     ${printStyles('label')}
@@ -754,11 +783,11 @@ function formalLabelStyles() {
       width: 210mm;
       height: 297mm;
       box-sizing: border-box;
-      padding: 7mm 8mm 5mm;
+      padding: 6mm 7mm 4mm;
       display: grid;
       grid-template-columns: 1fr;
       grid-template-rows: 1fr 1fr auto;
-      gap: 5mm;
+      gap: 4mm;
       page-break-after: always;
       break-after: page;
     }
@@ -789,8 +818,8 @@ function formalLabelStyles() {
       flex-direction: column;
       background: #fff;
       color: #111;
-      font-size: 11.5pt;
-      line-height: 1.3;
+      font-size: 10pt;
+      line-height: 1.25;
     }
     .formal-label--empty {
       visibility: hidden;
@@ -798,21 +827,22 @@ function formalLabelStyles() {
     }
     .formal-label__header {
       display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 4mm;
-      padding: 4mm 5mm 3.5mm;
+      grid-template-columns: 1fr minmax(0, 42mm);
+      gap: 3mm;
+      padding: 2.5mm 3.5mm 2mm;
       border-bottom: 1px solid #cbd5e1;
       align-items: start;
+      flex-shrink: 0;
     }
     .formal-label__company {
       display: flex;
-      gap: 2.5mm;
+      gap: 2mm;
       align-items: flex-start;
       min-width: 0;
     }
     .formal-label__accent {
-      width: 2.5mm;
-      min-height: 12mm;
+      width: 2mm;
+      min-height: 10mm;
       background: #1e4a8a;
       border-radius: 1px;
       flex-shrink: 0;
@@ -820,120 +850,133 @@ function formalLabelStyles() {
     }
     .formal-label__company-text {
       min-width: 0;
+      flex: 1;
     }
     .formal-label__company h1 {
-      margin: 0 0 1.5mm;
-      font-size: 19pt;
+      margin: 0 0 1mm;
+      font-size: 14pt;
       font-weight: 700;
       color: #111;
-      line-height: 1.25;
+      line-height: 1.2;
       word-break: break-word;
+      overflow-wrap: anywhere;
     }
     .formal-label__address {
       margin: 0;
-      font-size: 14.5pt;
-      line-height: 1.35;
+      font-size: 10pt;
+      line-height: 1.3;
       word-break: break-word;
+      overflow-wrap: anywhere;
     }
     .formal-label__barcodes {
       display: flex;
       flex-direction: column;
-      gap: 2mm;
+      gap: 1.5mm;
       align-items: flex-end;
       flex-shrink: 0;
+      max-width: 42mm;
     }
     .formal-barcode-block {
       display: flex;
       flex-direction: column;
-      align-items: left;
-      gap: 0.5mm;
+      align-items: flex-start;
+      gap: 0.4mm;
+      max-width: 100%;
     }
     .formal-barcode-block span {
-      font-size: 11pt;
+      font-size: 8.5pt;
       color: #475569;
       white-space: nowrap;
     }
     .formal-barcode-block svg {
-      width: auto;
+      width: 100%;
       height: auto;
       max-width: 100%;
       print-color-adjust: exact;
       -webkit-print-color-adjust: exact;
     }
     .formal-label__body {
-      flex: 1;
+      flex: 1 1 auto;
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 1.2fr 0.8fr;
       min-height: 0;
+      overflow: hidden;
     }
     .formal-label__left {
-      padding: 3mm 4mm 4mm 5mm;
+      padding: 2mm 3mm 2.5mm 3.5mm;
       border-right: 1px solid #e2e8f0;
       display: flex;
       flex-direction: column;
       gap: 0;
-      font-size: 17.5pt;
-      line-height: 1.3;
+      min-width: 0;
+      overflow: hidden;
     }
     .formal-info-row {
       display: grid;
-      grid-template-columns: 5.5mm 1fr;
-      gap: 2.5mm;
-      align-items: center;
-      padding: 2.2mm 0;
+      grid-template-columns: 4.5mm 1fr;
+      gap: 2mm;
+      align-items: start;
+      padding: 1.1mm 0;
       border-bottom: 1px solid #e2e8f0;
     }
     .formal-info-row:last-child {
       border-bottom: none;
     }
     .formal-info-row__icon {
-      width: 5.5mm;
-      height: 5.5mm;
+      width: 4.5mm;
+      height: 4.5mm;
       color: #1e4a8a;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.2mm;
     }
     .formal-info-row__icon svg {
-      width: 5.5mm;
-      height: 5.5mm;
+      width: 4.5mm;
+      height: 4.5mm;
       display: block;
     }
     .formal-info-row__text {
-      font-size: 11.5pt;
+      font-size: 9.5pt;
       color: #111;
       font-weight: 600;
+      line-height: 1.3;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      min-width: 0;
     }
     .formal-info-row__value {
       font-weight: 600;
       color: #111;
     }
     .formal-label__right {
-      padding: 3mm 4mm 4mm;
+      padding: 2mm 3mm 2.5mm;
       display: flex;
       flex-direction: column;
-      gap: 2mm;
+      gap: 1.5mm;
       min-width: 0;
+      overflow: hidden;
     }
     .formal-box-no__label {
       margin: 0;
-      font-size: 14pt;
+      font-size: 11pt;
       color: #1e4a8a;
       font-weight: 600;
       text-align: left;
     }
     .formal-box-no__value {
-      margin: 1mm 0 2mm;
+      margin: 0.5mm 0 1mm;
       text-align: center;
-      line-height: 1.1;
+      line-height: 1.05;
     }
     .formal-box-no__prefix {
-      font-size: 34pt;
+      font-size: 22pt;
       font-weight: 700;
       color: #1e4a8a;
     }
     .formal-box-no__numbers {
-      font-size: 48pt;
+      font-size: 32pt;
       font-weight: 700;
       color: #111;
     }
@@ -941,48 +984,62 @@ function formalLabelStyles() {
       margin-top: auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1mm;
+      gap: 0.8mm;
       border-top: 1px solid #e2e8f0;
-      padding-top: 3mm;
+      padding-top: 2mm;
     }
     .formal-stat {
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.8mm;
-      padding: 0 1mm;
+      gap: 0.5mm;
+      padding: 0 0.5mm;
       border-right: 1px solid #e2e8f0;
+      min-width: 0;
     }
     .formal-stat:last-child {
       border-right: none;
     }
     .formal-stat__icon {
-      width: 7mm;
-      height: 7mm;
+      width: 5.5mm;
+      height: 5.5mm;
       color: #1e4a8a;
+      flex-shrink: 0;
     }
     .formal-stat__icon svg {
-      width: 7mm;
-      height: 7mm;
+      width: 5.5mm;
+      height: 5.5mm;
       display: block;
     }
     .formal-stat__label {
-      font-size: 12pt;
+      font-size: 8.5pt;
       color: #64748b;
-      line-height: 1.2;
-      min-height: 2.4em;
+      line-height: 1.15;
+      min-height: 0;
+      word-break: break-word;
+      overflow-wrap: anywhere;
     }
     .formal-stat__number {
-      font-size: 22pt;
+      font-size: 16pt;
       font-weight: 700;
       color: #111;
       line-height: 1;
     }
     .formal-stat__unit {
-      font-size: 13pt;
+      font-size: 10pt;
       color: #111;
       line-height: 1;
+    }
+    @media print {
+      .formal-label {
+        overflow: hidden;
+      }
+      .formal-label__body,
+      .formal-label__left,
+      .formal-label__right {
+        overflow: hidden;
+      }
     }
   `;
 }
@@ -1040,8 +1097,8 @@ function renderFormalBoxLabel(data: BoxLabelPrintData) {
   const addressHtml = data.headerAddressLines
     .map((line) => `<p class="formal-label__address">${escapeHtml(line)}</p>`)
     .join('');
-  const docBarcode = renderCode39Svg(data.barcodeValue, PRINT_BARCODE_OPTIONS);
-  const boxBarcode = renderCode39Svg(data.boxBarcodeValue, PRINT_BARCODE_OPTIONS);
+  const docBarcode = renderCode39Svg(data.barcodeValue, LABEL_BARCODE_OPTIONS);
+  const boxBarcode = renderCode39Svg(data.boxBarcodeValue, LABEL_BARCODE_OPTIONS);
   const diDate = formatThaiDate(data.document.diDate);
   const weightNumber = data.totalWeight.toLocaleString(undefined, {
     minimumFractionDigits: 2,

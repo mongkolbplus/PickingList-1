@@ -38,7 +38,7 @@ export default function DashboardScreen() {
       <Card>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{th.dashboard.recentJobs}</Text>
-          <AppButton title={th.dashboard.viewAll} variant="ghost" onPress={() => router.push('/history')} />
+          <AppButton title={th.dashboard.viewAll} variant="ghost" onPress={() => router.push('/(tabs)/history')} />
         </View>
         {jobs.length === 0 ? (
           <Text style={styles.empty}>ยังไม่มีประวัติงาน</Text>

@@ -6,6 +6,8 @@ import {
   fetchErpCompany,
   fetchErpWarehouses,
   getDefaultErpApiBaseUrl,
+  migrateErpApiBaseUrl,
+  normalizeErpApiBaseUrl,
   setErpApiBaseUrl,
   setErpHttpMode as applyErpHttpMode,
   type ErpBranch,
@@ -59,8 +61,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     applyErpHttpMode(erpHttpMode);
     set({ erpHttpMode });
     if (erpUrl) {
-      setErpApiBaseUrl(erpUrl);
-      set({ erpApiUrl: erpUrl });
+      const migrated = migrateErpApiBaseUrl(erpUrl);
+      setErpApiBaseUrl(migrated);
+      set({ erpApiUrl: migrated });
+      if (migrated !== erpUrl) {
+        await AsyncStorage.setItem(ERP_URL_KEY, migrated);
+      }
     }
     if (authRaw) {
       const auth = JSON.parse(authRaw) as { loginGuid: string; username: string };
@@ -103,13 +109,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   setErpUrl: async (url) => {
-    const normalized = url.trim().replace(/\/$/, '');
-    if (!normalized) {
-      throw new Error('กรุณากรอกที่อยู่ API');
-    }
-    if (!/^https?:\/\//i.test(normalized)) {
-      throw new Error('ที่อยู่ API ต้องขึ้นต้นด้วย http:// หรือ https://');
-    }
+    const normalized = normalizeErpApiBaseUrl(url);
     setErpApiBaseUrl(normalized);
     await AsyncStorage.setItem(ERP_URL_KEY, normalized);
     set({ erpApiUrl: normalized });

@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { loadJobHistory } from '../src/services/database';
-import { Screen } from '../src/components/Screen';
-import { Card } from '../src/components/Card';
-import { StatusBadge } from '../src/components/StatusBadge';
-import { usePackingStore } from '../src/store/packingStore';
-import { colors } from '../src/theme/colors';
+import { loadJobHistory } from '../../src/services/database';
+import { Screen } from '../../src/components/Screen';
+import { Card } from '../../src/components/Card';
+import { StatusBadge } from '../../src/components/StatusBadge';
+import { usePackingStore } from '../../src/store/packingStore';
+import { colors } from '../../src/theme/colors';
 
 export default function HistoryScreen() {
   const jobs = usePackingStore((s) => s.jobs);

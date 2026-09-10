@@ -20,6 +20,7 @@
     },
     "android": {
       "package": "com.bplus.packinglist",
+      "softwareKeyboardLayoutMode": "resize",
       "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "backgroundColor": "#0d255c",

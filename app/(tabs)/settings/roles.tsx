@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { Screen } from '../../src/components/Screen';
-import { Card } from '../../src/components/Card';
-import { colors } from '../../src/theme/colors';
+import { Screen } from '../../../src/components/Screen';
+import { Card } from '../../../src/components/Card';
+import { colors } from '../../../src/theme/colors';
 
 const permissions = [
   { menu: 'งานบรรจุสินค้า', view: true, edit: true, delete: false, close: true, print: true },

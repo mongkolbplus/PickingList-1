@@ -1,5 +1,12 @@
 const DEFAULT_ERP_API_BASE_URL =
-  'http://url-to-erp-api/BplusErpDvSvrIIS31.dll';
+  'http://192.168.0.110:8422/ws1/BplusErpDvSvrIIS31_2025-05-09.dll';
+
+const ERP_ENDPOINT_SUFFIXES = [
+  '/DevUsers',
+  '/LookupErp',
+  '/UpdateErp',
+  '/ReadERP',
+] as const;
 
 export const BPAPUS_BPAPSV = '{167f0c96-86fd-488f-94d1-cc3169d60b1a}';
 
@@ -23,6 +30,27 @@ function normalizeBaseUrl(value: string | undefined | null): string | null {
   const trimmed = value?.trim();
   if (!trimmed) return null;
   return trimmed.replace(/\/$/, '');
+}
+
+/** Strip accidental /UpdateErp etc. — base URL must be the .dll path only. */
+export function stripErpEndpointSuffix(url: string): string {
+  let normalized = normalizeBaseUrl(url);
+  if (!normalized) return url;
+  for (const suffix of ERP_ENDPOINT_SUFFIXES) {
+    if (normalized.toLowerCase().endsWith(suffix.toLowerCase())) {
+      normalized = normalized.slice(0, -suffix.length).replace(/\/$/, '');
+    }
+  }
+  return normalized;
+}
+
+/** Upgrade legacy DLL name to match web app proxy target. */
+export function migrateErpApiBaseUrl(url: string): string {
+  const stripped = stripErpEndpointSuffix(url);
+  return stripped.replace(
+    /BplusErpDvSvrIIS31\.dll$/i,
+    'BplusErpDvSvrIIS31_2025-05-09.dll',
+  );
 }
 
 function applyHttpMode(url: string): string {
@@ -50,7 +78,7 @@ export function getErpApiBaseUrl(): string {
 }
 
 export function setErpApiBaseUrl(url: string) {
-  runtimeBaseUrl = normalizeBaseUrl(url);
+  runtimeBaseUrl = normalizeBaseUrl(migrateErpApiBaseUrl(url));
 }
 
 export function getDefaultErpApiBaseUrl(): string {
@@ -63,7 +91,8 @@ export function configureDefaultErpApiBaseUrl(url: string) {
 }
 
 export function normalizeErpApiBaseUrl(url: string): string {
-  const normalized = normalizeBaseUrl(url);
+  const migrated = migrateErpApiBaseUrl(url);
+  const normalized = normalizeBaseUrl(migrated);
   if (!normalized) {
     throw new Error('กรุณากรอกที่อยู่ API');
   }

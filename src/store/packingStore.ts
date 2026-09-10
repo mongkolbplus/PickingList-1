@@ -28,6 +28,10 @@ interface PackingState {
   createNewBox: () => Promise<void>;
   loadJobs: (jobs: JobRecord[]) => void;
   pauseSession: () => Promise<void>;
+  closeSession: (
+    current: ScanSession,
+    meta: { checkerName?: string; notes?: string; allowPartial?: boolean },
+  ) => Promise<void>;
 }
 
 async function persistSession(session: ScanSession | null) {
@@ -155,6 +159,27 @@ export const usePackingStore = create<PackingState>((set, get) => ({
       workflowStatus: th.workflow.paused,
       packerName: next.packerName,
       action: th.jobActions.pause,
+    });
+    const jobs = await loadJobHistory(200);
+    set({ jobs: jobs.length ? jobs : [job] });
+  },
+
+  closeSession: async (current, meta) => {
+    const next: ScanSession = {
+      ...current,
+      status: 'confirmed',
+      workflowStatus: th.workflow.done,
+      checkerName: meta.checkerName,
+      notes: meta.notes,
+    };
+    set({ session: next });
+    await persistSession(next);
+    const job = await upsertJobFromSession(next, {
+      workflowStatus: th.workflow.done,
+      packerName: next.packerName,
+      checkerName: meta.checkerName,
+      action: meta.allowPartial ? th.jobActions.closePartial : th.jobActions.close,
+      detail: meta.notes,
     });
     const jobs = await loadJobHistory(200);
     set({ jobs: jobs.length ? jobs : [job] });

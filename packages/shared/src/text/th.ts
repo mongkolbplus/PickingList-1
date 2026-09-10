@@ -197,6 +197,10 @@ export const th = {
     submit: 'ยืนยันปิดงาน',
     partialAlert:
       'ยังมีรายการผิดปกติ — ติ๊กยืนยันปิดงานแบบไม่ครบ (ผู้มีสิทธิ์) หรือกลับไปแก้ไข',
+    noClosedBoxScans: 'ยังไม่มีรายการสแกนในกล่องที่ปิดแล้ว',
+    erpSaveFailed: 'บันทึก ERP ไม่สำเร็จ — ตรวจสอบ SavePackingScaninfo',
+    proceedLocally: 'ดำเนินการปิดงานในเครื่องต่อหรือไม่?',
+    submitting: 'กำลังบันทึก...',
     anomalyShort: (qty: number) => `จัดสินค้าขาด ${qty} หน่วย`,
     anomalyOver: (qty: number) => `สินค้าเกิน ${qty} หน่วย`,
     anomalyNotBoxed: 'มีสินค้าที่สแกนแล้วแต่ยังไม่ได้ใส่กล่อง',
@@ -309,7 +313,7 @@ export const th = {
     resetDone: 'รีเซ็ตเป็นค่าเริ่มต้นแล้ว',
     activeUrl: 'ที่อยู่ที่ใช้งาน (localStorage)',
     envOptional: 'ดูค่าสำหรับใส่ใน .env (ไม่บังคับ)',
-    testOk: 'เชื่อมต่อ ERP ได้ (โปรพิเตทหรือพร็อกซีทำงาน)',
+    testOk: 'เชื่อมต่อ ERP ได้ (โปรโตคอลหรือพร็อกซีทำงาน)',
     testFailed: 'ทดสอบการเชื่อมต่อไม่สำเร็จ',
     httpMode: 'ใช้ HTTP (ไม่ใช้ SSL)',
     httpModeHint:

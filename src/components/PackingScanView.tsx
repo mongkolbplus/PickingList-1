@@ -1,16 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   Alert,
-  FlatList,
+  Keyboard,
   Modal,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
+  type KeyboardEvent,
 } from 'react-native';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import {
@@ -23,6 +26,7 @@ import {
   localUndoLastScan,
   parseBarcodeInput,
   th,
+  type ScanInputMode,
   type ScanSession,
 } from '@scan-goods/shared';
 import {
@@ -34,10 +38,9 @@ import {
   aggregateCurrentBoxLines,
   formatWeight,
 } from '@scan-goods/shared/utils/boxUtils';
+import { formatQty } from '@scan-goods/shared/utils/scanItemUtils';
 import {
   aggregateSessionItems,
-  formatQty,
-  statusBadgeTone,
 } from '@scan-goods/shared/utils/scanItemUtils';
 import {
   formatShippingAddress,
@@ -47,21 +50,25 @@ import {
 import { resolveScanRequirements } from '@scan-goods/shared/utils/serialLotUtils';
 import { usePackingStore } from '../store/packingStore';
 import { loadLatestSessionSnapshot } from '../services/database';
+import {
+  loadScanInputMode,
+} from '../services/scanInputSettings';
+import { loadSoundEnabled } from '../services/soundSettings';
 import { BARCODE_SCAN_TYPES } from '../constants/barcodeScan';
 import { AppButton } from './AppButton';
 import { Card } from './Card';
 import { QtyStepper } from './QtyStepper';
+import { ScanItemLinesTable } from './ScanItemLinesTable';
 import { SerialLotCapture } from './SerialLotCapture';
-import { StatusBadge, type StatusTone } from './StatusBadge';
 import { colors, minTouch, radius } from '../theme/colors';
 
 type ScanTab = 'doc' | 'items' | 'box';
 type NoticeTone = 'success' | 'error' | 'warn' | 'info';
 
-function toneToBadge(tone: ReturnType<typeof statusBadgeTone>): StatusTone {
-  if (tone === 'done') return 'ok';
-  if (tone === 'partial') return 'warn';
-  return 'muted';
+function scanDeviceHint(mode: ScanInputMode, keyboardOpen: boolean) {
+  if (keyboardOpen) return th.scanInput.hintKeyboard;
+  if (mode === 'camera') return th.scanInput.hintCamera;
+  return th.scanInput.hintScanner;
 }
 
 function noticeColor(tone: NoticeTone) {
@@ -102,6 +109,113 @@ export function PackingScanView() {
     skuName: string;
   } | null>(null);
   const [ready, setReady] = useState(false);
+  const [scanInputMode, setScanInputMode] = useState<ScanInputMode>('scanner');
+  const [keyboardMode, setKeyboardMode] = useState(false);
+  const [keyboardInset, setKeyboardInset] = useState(0);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const barcodeInputRef = useRef<TextInput>(null);
+  const keyboardModeRef = useRef(false);
+  const suppressKeyboardDismissRef = useRef(false);
+
+  const reloadScanPreferences = useCallback(async () => {
+    const [mode, sound] = await Promise.all([loadScanInputMode(), loadSoundEnabled()]);
+    setScanInputMode(mode);
+    setSoundEnabled(sound);
+    return mode;
+  }, []);
+
+  const focusBarcodeInput = useCallback((withSoftKeyboard: boolean) => {
+    const input = barcodeInputRef.current;
+    if (!input) return;
+
+    if (withSoftKeyboard) {
+      suppressKeyboardDismissRef.current = true;
+      input.blur();
+      Keyboard.dismiss();
+
+      const delay = Platform.OS === 'android' ? 80 : 30;
+      setTimeout(() => {
+        input.focus();
+        setTimeout(() => {
+          suppressKeyboardDismissRef.current = false;
+        }, 250);
+      }, delay);
+      return;
+    }
+
+    input.blur();
+    Keyboard.dismiss();
+    requestAnimationFrame(() => input.focus());
+  }, []);
+
+  const toggleKeyboard = () => {
+    if (keyboardMode) {
+      suppressKeyboardDismissRef.current = false;
+      setKeyboardMode(false);
+      return;
+    }
+    suppressKeyboardDismissRef.current = true;
+    setKeyboardMode(true);
+  };
+
+  useEffect(() => {
+    keyboardModeRef.current = keyboardMode;
+  }, [keyboardMode]);
+
+  useLayoutEffect(() => {
+    if (!keyboardMode) {
+      setKeyboardInset(0);
+      if (!suppressKeyboardDismissRef.current) {
+        focusBarcodeInput(false);
+      }
+      return;
+    }
+
+    suppressKeyboardDismissRef.current = true;
+    const clearSuppressTimer = setTimeout(() => {
+      suppressKeyboardDismissRef.current = false;
+    }, 350);
+
+    const retryTimer = setTimeout(() => {
+      if (keyboardModeRef.current) {
+        focusBarcodeInput(true);
+      }
+    }, Platform.OS === 'android' ? 180 : 100);
+
+    return () => {
+      clearTimeout(clearSuppressTimer);
+      clearTimeout(retryTimer);
+    };
+  }, [keyboardMode, focusBarcodeInput]);
+
+  useEffect(() => {
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const onShow = (event: KeyboardEvent) => {
+      setKeyboardInset(event.endCoordinates.height);
+    };
+    const onHide = () => {
+      setKeyboardInset(0);
+      if (suppressKeyboardDismissRef.current) return;
+      if (keyboardModeRef.current) {
+        setKeyboardMode(false);
+      }
+    };
+
+    const showSub = Keyboard.addListener(showEvent, onShow);
+    const hideSub = Keyboard.addListener(hideEvent, onHide);
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      void reloadScanPreferences();
+    }, [reloadScanPreferences]),
+  );
 
   useEffect(() => {
     let mounted = true;
@@ -127,7 +241,7 @@ export function PackingScanView() {
       return;
     }
     if (session.status === 'confirmed') {
-      router.replace('/packing/print');
+      router.replace('/(tabs)/packing/print');
     }
   }, [ready, session]);
 
@@ -153,6 +267,7 @@ export function PackingScanView() {
   const notify = async (message: string, tone: NoticeTone) => {
     setNotice(message);
     setNoticeTone(tone);
+    if (!soundEnabled) return;
     if (tone === 'success') {
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } else if (tone === 'error' || tone === 'warn') {
@@ -171,6 +286,11 @@ export function PackingScanView() {
       );
     } finally {
       setBusy(false);
+      if (keyboardMode) {
+        focusBarcodeInput(true);
+      } else {
+        focusBarcodeInput(false);
+      }
     }
   };
 
@@ -311,34 +431,7 @@ export function PackingScanView() {
     </ScrollView>
   );
 
-  const renderItemsTab = () => (
-    <FlatList
-      data={itemLines}
-      keyExtractor={(item) => item.lineKey}
-      style={styles.panelScroll}
-      contentContainerStyle={styles.panelContent}
-      ListHeaderComponent={
-        <Text style={styles.panelTitle}>
-          {th.scan.remainingTitle} ({itemLines.length})
-        </Text>
-      }
-      renderItem={({ item }) => (
-        <Card style={styles.lineCard}>
-          <Text style={styles.lineCode}>{item.barcode} · {item.skuCode}</Text>
-          <Text style={styles.lineName}>{item.skuName}</Text>
-          <Text style={styles.lineMeta}>
-            {item.unitName} · บรรจุ {formatQty(item.packSize)} · {item.sourceDiRef}
-          </Text>
-          <View style={styles.lineStats}>
-            <Text style={styles.stat}>ตามเอกสาร {formatQty(item.documentQty)}</Text>
-            <Text style={styles.stat}>สแกน {formatQty(item.scanQty)}</Text>
-            <Text style={styles.stat}>คงเหลือ {formatQty(item.remainingQty)}</Text>
-            <StatusBadge label={item.status} tone={toneToBadge(statusBadgeTone(item.status))} />
-          </View>
-        </Card>
-      )}
-    />
-  );
+  const renderItemsTab = () => <ScanItemLinesTable itemLines={itemLines} />;
 
   const renderBoxTab = () => (
     <ScrollView style={styles.panelScroll} contentContainerStyle={styles.panelContent}>
@@ -428,6 +521,7 @@ export function PackingScanView() {
 
   return (
     <View style={styles.root}>
+      <View style={styles.content}>
       <View style={styles.header}>
         <View>
           <Text style={styles.eyebrow}>{th.scan.eyebrow}</Text>
@@ -447,7 +541,7 @@ export function PackingScanView() {
             title={th.scan.closeJob}
             variant="danger"
             disabled={busy}
-            onPress={() => router.push('/packing/confirm')}
+            onPress={() => router.push('/(tabs)/packing/confirm')}
           />
         </View>
       </View>
@@ -488,10 +582,13 @@ export function PackingScanView() {
         {activeTab === 'box' ? renderBoxTab() : null}
       </View>
 
-      <View style={styles.dock}>
+      <View style={[styles.dock, keyboardInset > 0 && { marginBottom: keyboardInset }]}>
         <Text style={styles.scanTitle}>{th.scan.scanTitle}</Text>
+        <Text style={styles.scanHint}>{scanDeviceHint(scanInputMode, keyboardMode)}</Text>
         <View style={styles.scanRow}>
           <TextInput
+            key={keyboardMode ? 'barcode-keyboard' : 'barcode-scanner'}
+            ref={barcodeInputRef}
             style={styles.scanInput}
             value={barcode}
             onChangeText={setBarcode}
@@ -499,12 +596,33 @@ export function PackingScanView() {
             placeholder={th.scan.scanPlaceholder}
             placeholderTextColor={colors.muted}
             editable={!busy}
+            showSoftInputOnFocus={keyboardMode}
+            autoFocus={keyboardMode}
             autoCapitalize="none"
             autoCorrect={false}
             returnKeyType="done"
           />
-          <Pressable style={styles.cameraBtn} onPress={() => void openCamera()} disabled={busy}>
-            <Text style={styles.cameraBtnText}>📷</Text>
+          <Pressable
+            style={[styles.iconBtn, keyboardMode ? styles.iconBtnActive : styles.iconBtnSecondary]}
+            onPress={toggleKeyboard}
+            disabled={busy}
+            accessibilityRole="button"
+            accessibilityLabel={keyboardMode ? th.scan.keyboardClose : th.scan.keyboardOpen}
+          >
+            <MaterialCommunityIcons
+              name={keyboardMode ? 'keyboard' : 'keyboard-outline'}
+              size={22}
+              color={keyboardMode ? '#fff' : colors.accent}
+            />
+          </Pressable>
+          <Pressable
+            style={styles.iconBtn}
+            onPress={() => void openCamera()}
+            disabled={busy}
+            accessibilityRole="button"
+            accessibilityLabel={th.scan.cameraScan}
+          >
+            <Ionicons name="scan-outline" size={22} color="#fff" />
           </Pressable>
         </View>
         <View style={styles.scanControls}>
@@ -608,6 +726,7 @@ export function PackingScanView() {
           }}
         />
       ) : null}
+      </View>
     </View>
   );
 }
@@ -623,6 +742,7 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
+  content: { flex: 1 },
   loadingWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg },
   loadingText: { color: colors.muted },
   header: {
@@ -687,10 +807,7 @@ const styles = StyleSheet.create({
   muted: { color: colors.muted },
   lineCard: { marginBottom: 0 },
   lineCode: { fontWeight: '700', color: colors.ink },
-  lineName: { color: colors.ink, marginTop: 2 },
   lineMeta: { color: colors.muted, fontSize: 12, marginTop: 4 },
-  lineStats: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, alignItems: 'center', marginTop: 8 },
-  stat: { fontSize: 13, color: colors.ink },
   boxRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   boxActions: { flexDirection: 'row', gap: 8, marginTop: 12, flexWrap: 'wrap' },
   dock: {
@@ -701,6 +818,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   scanTitle: { fontSize: 14, fontWeight: '700', color: colors.ink },
+  scanHint: { fontSize: 12, color: colors.muted, marginBottom: 6, lineHeight: 18 },
   scanRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
   scanInput: {
     flex: 1,
@@ -713,15 +831,24 @@ const styles = StyleSheet.create({
     color: colors.ink,
     backgroundColor: '#fff',
   },
-  cameraBtn: {
+  iconBtn: {
     width: minTouch,
     height: minTouch,
     borderRadius: radius.md,
     backgroundColor: colors.accent,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.accent,
   },
-  cameraBtnText: { fontSize: 22 },
+  iconBtnSecondary: {
+    backgroundColor: '#fff',
+    borderColor: colors.line,
+  },
+  iconBtnActive: {
+    backgroundColor: colors.sidebar,
+    borderColor: colors.sidebar,
+  },
   scanControls: {
     flexDirection: 'row',
     flexWrap: 'wrap',

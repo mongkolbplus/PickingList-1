@@ -23,6 +23,14 @@ export async function savePackingScaninfo(
 ): Promise<SavePackingCloseResult> {
   const param = JSON.stringify(payload);
   const body = erpBaseBody(loginGuid, 'SavePackingScaninfo', param);
+  console.log('[ConfirmClose] savePackingScaninfo:send', JSON.stringify({
+    endpoint: 'UpdateErp',
+    function: 'SavePackingScaninfo',
+    loginGuid,
+    detailLineCount: payload.ErpUpdFunc[0]?.ImpPackingDetail.length ?? 0,
+    body,
+  }));
   const raw = await erpRequest<unknown>('UpdateErp', body);
+  console.log('[ConfirmClose] savePackingScaninfo:response', JSON.stringify(raw));
   return { raw, message: pickMessage(raw) };
 }
